@@ -1,25 +1,17 @@
-import pickle
 import copy
 
 import polars as pl
 import numpy as np
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
-from preprocessing import prepare_data_for_torchmetrics
+import preprocessing
 
-
-def load_data(file_path):
-    with open(file_path, "rb") as file:
-        data = pickle.load(file)
-    return data
-
-
-data = load_data("all_data_processed.pkl")
+data = preprocessing.load_data("all_data_processed.pkl")
 
 
 def compute_metrics(data_dict, **kwargs):
     """Compute mAP and mAR metrics using TorchMetrics"""
-    preds, targets = prepare_data_for_torchmetrics(data_dict)
+    preds, targets = preprocessing.prepare_data_for_torchmetrics(data_dict)
 
     metric = MeanAveragePrecision(**kwargs)
     metric.update(preds, targets)
@@ -92,7 +84,6 @@ def compute_metrics_for_active_objects(data_dict, **kwargs):
 
 
 if __name__ == "__main__":
-
     full_results, _ = compute_metrics(data)
     active_results, _ = compute_metrics_for_active_objects(data)
 
