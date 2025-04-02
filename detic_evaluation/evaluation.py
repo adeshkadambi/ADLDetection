@@ -1,4 +1,5 @@
 import copy
+import os
 
 import polars as pl
 import numpy as np
@@ -6,7 +7,7 @@ from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
 import preprocessing
 
-data = preprocessing.load_data("all_data_processed.pkl")
+data = preprocessing.load_data(os.path.join("detic_evaluation", "all_data.pkl"))
 
 
 def compute_metrics(data_dict, **kwargs):
